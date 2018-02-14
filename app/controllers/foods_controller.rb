@@ -1,3 +1,8 @@
+require 'open-uri'
+require 'json'
+
+OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+
 class FoodsController < ApplicationController
   def index
     @foods = Food.all
@@ -7,7 +12,11 @@ class FoodsController < ApplicationController
 
   def show
     @food = Food.find(params[:id])
-
+    url_safe_street_address = URI.encode(@food.store_address)
+    url = "https://maps.googleapis.com/maps/api/geocode/json?address="+url_safe_street_address
+    parsed_data = JSON.parse(open(url).read)
+    @latitude = parsed_data.dig("results", 0, "geometry", "location", "lat")
+    @longitude = parsed_data.dig("results", 0, "geometry", "location", "lng")
     render("foods_templates/show.html.erb")
   end
 
@@ -43,7 +52,7 @@ class FoodsController < ApplicationController
 
     @food.save
 
-    redirect_to("/foods")
+    redirect_to("/foods/" + @food.id)
   end
 
   def destroy_row
