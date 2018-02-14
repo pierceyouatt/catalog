@@ -43,15 +43,6 @@ ActiveRecord::Schema.define(version: 20170726180428) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
-  create_table "books", force: :cascade do |t|
-    t.string "title"
-    t.string "author"
-    t.string "publisher"
-    t.string "genre"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "coffee_beans", force: :cascade do |t|
     t.string "blend_name"
     t.string "origin"
@@ -71,13 +62,6 @@ ActiveRecord::Schema.define(version: 20170726180428) do
   end
 
   create_table "lists", force: :cascade do |t|
-    t.string "title"
-    t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "tasks", force: :cascade do |t|
     t.string "title"
     t.string "description"
     t.datetime "created_at", null: false
